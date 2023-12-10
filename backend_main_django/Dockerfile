@@ -1,6 +1,7 @@
 FROM nginx/unit:1.25.0-python3.9
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
+ENV SECRET_KEY 123
 
 WORKDIR /code
 COPY requirements.txt /code/
@@ -11,6 +12,6 @@ RUN apt update && apt install -y python3-pip                                  \
     && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/*.list
 COPY unit_config.json /docker-entrypoint.d/
 COPY . /code/
-RUN SECRET_KEY=empty python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput
 EXPOSE 80
 VOLUME ["/media"]

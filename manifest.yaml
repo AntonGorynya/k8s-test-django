@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-pod
+  labels:
+    env: prod
+    app: main
+spec:
+  containers:
+    - name: postgres-container
+      image: sdieul/task1_db:latest
+      ports:
+        - containerPort: 5432
+
+    - name: django-container
+      image: sdieul/task1_backend_main_django:latest
+      ports:
+        - containerPort: 80
