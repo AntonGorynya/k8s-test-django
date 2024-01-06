@@ -1,18 +1,56 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: app-pod
+  name: app-deployment
   labels:
     env: prod
     app: main
 spec:
-  containers:
-    - name: postgres-container
-      image: sdieul/task1_db:latest
-      ports:
-        - containerPort: 5432
+  replicas: 1
+  selector:
+    matchLabels:
+      project: webapp
+  template:
+    metadata:
+      labels:
+        project: webapp
+    spec:
+      containers:
+        - name: postgres-container
+          image: postgres:12.0-alpine
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+          ports:
+            - containerPort: 5432 # Port on Pod
 
-    - name: django-container
-      image: sdieul/task1_backend_main_django:latest
-      ports:
-        - containerPort: 80
+        - name: django-container
+          image: sdieul/task1_backend_main_django:latest
+          envFrom:
+            - configMapRef:
+                name: django-config
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+  labels:
+    emv: prod
+    owner: AntonGorynia
+spec:
+  type: LoadBalancer
+  selector:
+    project: webapp  # Selecting PODS with those Labels
+  ports:
+    - name: app-listener
+      protocol: TCP
+      port: 80  # Port on Load Balancer
+      targetPort: 80  # Port on POD
+
+    - name: db-listener
+      protocol: TCP
+      port: 5432  # Port on Load Balancer
+      targetPort: 5432  # Port on POD
