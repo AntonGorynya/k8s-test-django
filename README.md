@@ -32,3 +32,40 @@ $ docker-compose run web ./manage.py createsuperuser
 `ALLOWED_HOSTS` -- настройка Django со списком разрешённых адресов. Если запрос прилетит на другой адрес, то сайт ответит ошибкой 400. Можно перечислить несколько адресов через запятую, например `127.0.0.1,192.168.0.1,site.test`. [Документация Django](https://docs.djangoproject.com/en/3.2/ref/settings/#allowed-hosts).
 
 `DATABASE_URL` -- адрес для подключения к базе данных PostgreSQL. Другие СУБД сайт не поддерживает. [Формат записи](https://github.com/jacobian/dj-database-url#url-schema).
+
+
+# Запуск в k8s
+
+Заполните переменные окружения в файлах `postgres-config.yml` и `django-config.yml`
+После чего примените данные файлы
+```commandline
+kubectl apply -f postgres-config.yml
+kubectl apply -f django-config.yml
+```
+Если кластер развернут локально выполните команду в отдельной консоли
+```commandline
+minikube tunnel
+```
+Примените основный файл
+```commandline
+ kubectl apply -f .\manifest.yaml
+```
+Проверьте созданый Pod
+```commandline
+kubectl get pods
+```
+Скопируйте названаие пода для выполнения следющей команды.
+Перейдите в нужный контейнер `django-container`
+```commandline
+kubectl exec -it app-deployment-7f6d7fb5c8-dsrjj  -c django-container -- /bin/sh
+
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+```
+
+Проверьте назначенный IP
+```commandline
+kubectl.exe get svc
+```
+Перейдите на веб интерфейс.
