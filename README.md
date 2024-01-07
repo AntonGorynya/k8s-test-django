@@ -69,3 +69,7 @@ python manage.py createsuperuser
 kubectl.exe get svc
 ```
 Перейдите на веб интерфейс.
+При необхолдимости отредактируйте файл `hosts` задав строку вида
+```commandline
+10.97.40.183  star-burger.test www.star-burger.test
+```
