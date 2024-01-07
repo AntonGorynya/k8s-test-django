@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: app-deployment
   labels:
-    env: prod
+    env: dev
     app: main
 spec:
   replicas: 1
@@ -38,7 +38,7 @@ kind: Service
 metadata:
   name: web-service
   labels:
-    emv: prod
+    emv: dev
     owner: AntonGorynia
 spec:
   type: LoadBalancer
