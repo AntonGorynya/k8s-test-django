@@ -1,0 +1,23 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: delete-django-sessions
+spec:
+  schedule: "*/1 * * * *"
+  concurrencyPolicy: Allow
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 100
+      template:
+        spec:
+          containers:
+          - name: django-container
+            image: sdieul/task1_backend_main_django:latest
+            command: ["python", "manage.py", "clearsessions"]
+            envFrom:
+              - configMapRef:
+                  name: django-config
+            ports:
+              - containerPort: 80
+          restartPolicy: Never
