@@ -60,16 +60,23 @@ $result = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64Str
 kubectl apply -f django-config.yml
 kubectl apply -f .\manifest.yaml
 kubectl.exe apply -f .\delete-sessions-cronjob.yml
+kubectl.exe apply -f .\ingress.yml 
 ```
-Если кластер развернут локально выполните команду в отдельной консоли для доступа по IP
+Что бы узнать IP  назначенный на сервис выполните
+```commandline
+kubectl.exe get svc
+```
+
+Для доступа на сайт из локальной машины можете либо поднять туннель и получить доступ по IP
+
 ```commandline
 minikube tunnel
 ```
-
-Проверьте созданый Pod
+либо проверьте назначенный IP на сервис и пропишите его в файле `hosts` задав необходимое для вас имя.
 ```commandline
-kubectl get pods
+10.97.40.183  star-burger.test www.star-burger.test
 ```
+
 Скопируйте названаие пода для выполнения следющей команды.
 Перейдите в нужный контейнер `django-container`
 ```commandline
@@ -78,14 +85,4 @@ kubectl exec -it app-deployment-7f6d7fb5c8-dsrjj  -c django-container -- /bin/sh
 python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
-```
-
-Проверьте назначенный IP
-```commandline
-kubectl.exe get svc
-```
-Перейдите на веб интерфейс.
-При необхолдимости отредактируйте файл `hosts` задав строку вида
-```commandline
-10.97.40.183  star-burger.test www.star-burger.test
 ```
