@@ -16,17 +16,4 @@ spec:
             - name: django-container
               image: sdieul/task1_backend_main_django:latest
               command: ["python", "manage.py", "clearsessions"]
-              envFrom:
-                - configMapRef:
-                    name: django-config
-              ports:
-                - containerPort: 80
-
-            - name: postgres-container
-              image: postgres:12.0-alpine
-              envFrom:
-                - configMapRef:
-                    name: postgres-config
-              ports:
-                - containerPort: 5432 # Port on Pod
           restartPolicy: Never
