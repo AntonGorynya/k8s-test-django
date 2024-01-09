@@ -15,5 +15,8 @@ spec:
           containers:
             - name: django-container
               image: sdieul/task1_backend_main_django:latest
+              envFrom:
+                - configMapRef:
+                    name: django-config
               command: ["python", "manage.py", "clearsessions"]
           restartPolicy: Never

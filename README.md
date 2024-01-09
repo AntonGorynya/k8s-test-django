@@ -36,20 +36,36 @@ $ docker-compose run web ./manage.py createsuperuser
 
 # Запуск в k8s
 
-Заполните переменные окружения в файлах `postgres-config.yml` и `django-config.yml`
-После чего примените данные файлы
+Установите helm
 ```commandline
-kubectl apply -f postgres-config.yml
-kubectl apply -f django-config.yml
+choco install kubernetes-helm
 ```
-Если кластер развернут локально выполните команду в отдельной консоли
+Добавьте репозиторий
+```commandline
+helm repo add bitnami https://charts.bitnami.com/bitnami
+```
+Установите postgres
+```commandline
+helm install my-postgresql bitnami/postgresql --version 13.2.28
+```
+Выясняем пароль к БД
+```commandline
+$POSTGRES_PASSWORD = kubectl get secret --namespace default my-postgresql -o jsonpath="{.data.postgres-password}" 
+$result = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($POSTGRES_PASSWORD))
+```
+
+Заполните переменные окружения в файле `django-config.yml`
+После чего примените манифесты
+```commandline
+kubectl apply -f django-config.yml
+kubectl apply -f .\manifest.yaml
+kubectl.exe apply -f .\delete-sessions-cronjob.yml
+```
+Если кластер развернут локально выполните команду в отдельной консоли для доступа по IP
 ```commandline
 minikube tunnel
 ```
-Примените основный файл
-```commandline
- kubectl apply -f .\manifest.yaml
-```
+
 Проверьте созданый Pod
 ```commandline
 kubectl get pods

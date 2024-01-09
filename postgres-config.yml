@@ -5,7 +5,7 @@ metadata:
   labels:
     app: main
 data:
-  POSTGRES_DB: "REPLACE_ME"
-  POSTGRES_USER: "REPLACE_ME"
-  POSTGRES_PASSWORD: "REPLACE_ME"
+  POSTGRES_DB: "test_k8s"
+  POSTGRES_USER: "test_k8s"
+  POSTGRES_PASSWORD: "OwOtBep9Frut"
   PGDATA: "/var/lib/postgresql/data/pgdata"
