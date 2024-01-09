@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: django-migrate-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: django-container
+        image: sdieul/task1_backend_main_django:latest
+        envFrom:
+          - configMapRef:
+              name: django-config
+        command:
+          - "/bin/sh"
+          - "-c"
+          - |
+            python manage.py makemigrations
+            python manage.py migrate
+      restartPolicy: Never

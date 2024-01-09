@@ -59,6 +59,7 @@ $result = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64Str
 ```commandline
 kubectl apply -f django-config.yml
 kubectl apply -f .\manifest.yaml
+kubectl.exe apply -f .\migrate-job.yml 
 kubectl.exe apply -f .\delete-sessions-cronjob.yml
 kubectl.exe apply -f .\ingress.yml 
 ```
@@ -77,12 +78,14 @@ minikube tunnel
 10.97.40.183  star-burger.test www.star-burger.test
 ```
 
-Скопируйте названаие пода для выполнения следющей команды.
+
+## Создание  superuser
+При первом запуске так же необходимо создать superuser
 Перейдите в нужный контейнер `django-container`
 ```commandline
 kubectl exec -it app-deployment-7f6d7fb5c8-dsrjj  -c django-container -- /bin/sh
-
-python manage.py makemigrations
-python manage.py migrate
+```
+и создайте superuser
+```commandline
 python manage.py createsuperuser
 ```
