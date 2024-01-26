@@ -34,7 +34,7 @@ $ docker-compose run web ./manage.py createsuperuser
 `DATABASE_URL` -- адрес для подключения к базе данных PostgreSQL. Другие СУБД сайт не поддерживает. [Формат записи](https://github.com/jacobian/dj-database-url#url-schema).
 
 
-# Запуск в k8s
+# Запуск в dev окружении
 
 Установите helm
 ```commandline
