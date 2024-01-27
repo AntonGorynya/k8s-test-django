@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  namespace: edu-goofy-allen
+  labels:
+    app: nginx
+spec:
+  restartPolicy: OnFailure
+  containers:
+  - name: nginx
+    image: nginx:1.25.3
+    ports:
+    - containerPort: 80
+    - containerPort: 443
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: edu-goofy-allen
+  labels:
+    app: ingress-nginx
+spec:
+  #externalTrafficPolicy: Local
+  type: LoadBalancer
+  #loadBalancerIP: 84.201.152.191
+  selector:
+    app: nginx
+  ports:
+    - name: app-http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+
+    - name: app-https
+      protocol: TCP
+      port: 443
+      targetPort: 443
