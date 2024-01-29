@@ -71,9 +71,9 @@ kubectl create secret generic django-secret-config --from-literal=SECRET_KEY=$se
 kubectl apply -f django-config.yml
 kubectl apply -f .\deployment.yaml
 kubectl apply -f .\service.yml
+kubectl.exe apply -f .\ingress.yml 
 kubectl.exe apply -f .\migrate-job.yml 
 kubectl.exe apply -f .\delete-sessions-cronjob.yml
-kubectl.exe apply -f .\ingress.yml 
 ```
 Что бы узнать IP  назначенный на сервис выполните
 ```commandline
