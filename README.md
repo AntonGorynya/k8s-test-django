@@ -53,6 +53,17 @@ helm install my-postgresql bitnami/postgresql --version 13.2.28
 $POSTGRES_PASSWORD = kubectl get secret --namespace default my-postgresql -o jsonpath="{.data.postgres-password}" 
 $result = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($POSTGRES_PASSWORD))
 ```
+Создадим секретный ключ вашего проекта на django Вы можете создать ключ выполнив команду
+```commandline
+python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+```
+
+Создаем `secret` из 2х переменных:
+- SECRET_KEY - секретный ключ вашего проекта на django 
+- DATABASE_URL - ссылка вида postgres://USER:PASSWORD@HOST:PORT/NAME
+```commandline
+kubectl create secret generic django-secret-config --from-literal=SECRET_KEY=REPLACE_ME --from-literal=DATABASE_URL=postgres://REPLACE_ME
+```
 
 Заполните переменные окружения в файле `django-config.yml`
 После чего примените манифесты
