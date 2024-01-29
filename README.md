@@ -69,7 +69,8 @@ kubectl create secret generic django-secret-config --from-literal=SECRET_KEY=REP
 После чего примените манифесты
 ```commandline
 kubectl apply -f django-config.yml
-kubectl apply -f .\manifest.yaml
+kubectl apply -f .\deployment.yaml
+kubectl apply -f .\service.yaml
 kubectl.exe apply -f .\migrate-job.yml 
 kubectl.exe apply -f .\delete-sessions-cronjob.yml
 kubectl.exe apply -f .\ingress.yml 
