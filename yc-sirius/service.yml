@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: edu-goofy-allen
+  labels:
+    app: nginx
+#spec:
+#  type: ExternalName
+#  externalName: edu-goofy-allen.sirius-k8s.dvmn.org
+#  selector:
+#    app: nginx
+#  ports:
+#    - name: app-http
+#      protocol: TCP
+#      port: 30351
+#      targetPort: 80
+
+spec:
+  type: NodePort            # Configure NodePort so that external traffic can access services in k8S
+  ports:
+  - port: 443             # Service access port, a port for internal cluster access
+    targetPort: 443          # Port defined in pod controller (port accessed by application)
+    nodePort: 30351         # NodePort, the port accessed by external clients
+  selector:
+    name: nginx
