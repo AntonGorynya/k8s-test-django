@@ -55,14 +55,14 @@ $result = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64Str
 ```
 Создадим секретный ключ вашего проекта на django Вы можете создать ключ выполнив команду
 ```commandline
-python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+$secret_key = python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
 ```
 
 Создаем `secret` из 2х переменных:
 - SECRET_KEY - секретный ключ вашего проекта на django 
 - DATABASE_URL - ссылка вида postgres://USER:PASSWORD@HOST:PORT/NAME
 ```commandline
-kubectl create secret generic django-secret-config --from-literal=SECRET_KEY=REPLACE_ME --from-literal=DATABASE_URL=postgres://REPLACE_ME
+kubectl create secret generic django-secret-config --from-literal=SECRET_KEY=$secret_key --from-literal=DATABASE_URL=postgres://postgres:$result@my-postgresql.default.svc.cluster.local:5432/postgres 
 ```
 
 Заполните переменные окружения в файле `django-config.yml`
@@ -70,7 +70,7 @@ kubectl create secret generic django-secret-config --from-literal=SECRET_KEY=REP
 ```commandline
 kubectl apply -f django-config.yml
 kubectl apply -f .\deployment.yaml
-kubectl apply -f .\service.yaml
+kubectl apply -f .\service.yml
 kubectl.exe apply -f .\migrate-job.yml 
 kubectl.exe apply -f .\delete-sessions-cronjob.yml
 kubectl.exe apply -f .\ingress.yml 
