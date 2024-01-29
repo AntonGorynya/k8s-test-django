@@ -30,7 +30,7 @@ kind: Service
 metadata:
   name: web-service
   labels:
-    emv: dev
+    env: dev
     owner: AntonGorynia
 spec:
   type: LoadBalancer
