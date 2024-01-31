@@ -5,17 +5,6 @@ metadata:
   namespace: edu-goofy-allen
   labels:
     app: nginx
-#spec:
-#  type: ExternalName
-#  externalName: edu-goofy-allen.sirius-k8s.dvmn.org
-#  selector:
-#    app: nginx
-#  ports:
-#    - name: app-http
-#      protocol: TCP
-#      port: 30351
-#      targetPort: 80
-
 spec:
   type: NodePort            # Configure NodePort so that external traffic can access services in k8S
   ports:
