@@ -22,12 +22,12 @@ spec:
           - containerPort: 80
           - containerPort: 443
 
-        - name: django-container
-          image: sdieul/task1_backend_main_django:latest
-          envFrom:
-            - configMapRef:
-                name: django-config
-            - secretRef:
-                name: django-secret-config
-          ports:
-            - containerPort: 443
+#        - name: django-container
+#          image: sdieul/task1_backend_main_django:latest
+#          envFrom:
+#            - configMapRef:
+#                name: django-config
+#            - secretRef:
+#                name: django-secret-config
+#          ports:
+#            - containerPort: 443
