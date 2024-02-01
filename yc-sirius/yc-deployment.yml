@@ -6,7 +6,7 @@ metadata:
   labels:
     app: nginx
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       project: nginx
@@ -21,6 +21,12 @@ spec:
           ports:
           - containerPort: 80
           - containerPort: 443
+
+        - name: ubuntu
+          image: ubuntu:latest
+          envFrom:
+            - secretRef:
+                name: postgres
 
 #        - name: django-container
 #          image: sdieul/task1_backend_main_django:latest
