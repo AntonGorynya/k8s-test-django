@@ -34,15 +34,17 @@ spec:
   containers:
     - name: ubuntu
       image: ubuntu:latest
-      command: ['/bin/sh', '-c']
-      args:
-        - apt-get update && apt-get upgrade && \
-          apt-get install wget -y && \
-          mkdir -p ~/.postgresql && \
-          wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" \
-               --output-document ~/.postgresql/root.crt && \
-          chmod 0600 ~/.postgresql/root.crt && \
-          tail -f /dev/null
+
+      command: ["/bin/sh","-c"]
+      args: [
+        'apt-get update;
+         apt install wget -y &&
+         mkdir -p ~/.postgresql &&
+         wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" --output-document ~/.postgresql/root.crt &&
+         chmod 0600 ~/.postgresql/root.crt &&
+         tail -f /dev/null'
+      ]
+
       envFrom:
         - secretRef:
             name: postgres
