@@ -90,6 +90,44 @@ minikube tunnel
 10.97.40.183  star-burger.test www.star-burger.test
 ```
 
+# Запуск в yandex-sirius облаке
+Установите `kubernetes-cli`
+```commandline
+choco install kubernetes-cli
+```
+
+Установите и инициализируете консоль управления облаком
+```commandline
+iex (New-Object System.Net.WebClient).DownloadString('https://storage.yandexcloud.net/yandexcloud-yc/install.ps1')
+yc init
+```
+Задайте `context` и `namespace`
+```commandline
+kubectl config use-context yc-sirius
+kubectl config set-context --current --namespace=edu-goofy-allen
+```
+Создадим секретный ключ вашего проекта на django Вы можете создать ключ выполнив команду
+```commandline
+$secret_key = python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+```
+Закодируйте ключ в base64
+```commandline
+$encodedBytes = [System.Text.Encoding]::UTF8.GetBytes($secret_key)
+$base64String = [System.Convert]::ToBase64String($encodedBytes)
+```
+Добавте ключ в `secret`
+```commandline
+kubectl edit secrets django-secret-config
+```
+
+Перейдите в папку `yc-sisrius` и примените конфигурационные файлы
+```commandline
+kubectl apply -f django-config.yml
+kubectl apply -f yc-service.yml
+kubectl.exe apply -f ingress.yml 
+kubectl.exe apply -f yc-deployment.yml 
+```
+
 
 ## Создание  superuser
 При первом запуске так же необходимо создать superuser
