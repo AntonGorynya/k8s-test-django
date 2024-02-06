@@ -120,6 +120,15 @@ $base64String = [System.Convert]::ToBase64String($encodedBytes)
 kubectl edit secrets django-secret-config
 ```
 
+Cкачайте сертификат 
+```commandline
+wget "https://storage.yandexcloud.net/cloud-certs/CA.pem"
+```
+Создайте секрет
+```commandline
+kubectl create secret generic psql-cert --from-file=root.crt
+```
+
 Перейдите в папку `yc-sisrius` и примените конфигурационные файлы
 ```commandline
 kubectl apply -f django-config.yml
