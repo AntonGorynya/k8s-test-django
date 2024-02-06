@@ -42,10 +42,6 @@ spec:
       containers:
         - name: django-container
           image: sdieul/task1_backend_main_django:latest
-#          lifecycle:
-#            postStart:
-#              exec:
-#                command: ['chmod', '0600', '/root/.postgresql/root.crt']
 
           envFrom:
             - configMapRef:
@@ -56,19 +52,20 @@ spec:
                 name: postgres
           env:
             - name: DATABASE_URL
-              value: postgresql://$(username):$(password)@$(host):$(port)/$(name)?sslmode=verify-full&target_session_attrs=any&sslrootcert=/root/.postgresql/root.crt
+              value: postgresql://$(username):$(password)@$(host):$(port)/$(name)?sslmode=verify-full&target_session_attrs=any&sslrootcert=/code/.postgresql/root.crt
 
           ports:
             - containerPort: 80
           volumeMounts:
             - name: psql-certs
-              mountPath: '/root/.postgresql/'
+              mountPath: '/code/.postgresql/root.crt'
+              subPath: 'root.crt'
               readOnly: False
       volumes:
         - name: psql-certs
           secret:
             secretName: psql-cert
-            defaultMode: 384
+            defaultMode: 0666
 
 
 ---
