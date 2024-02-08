@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-service
+  name: django-nginx-service
   namespace: edu-goofy-allen
   labels:
-    app: nginx
+    app: django
 spec:
   type: NodePort            # Configure NodePort so that external traffic can access services in k8S
   ports:
@@ -13,4 +13,4 @@ spec:
     nodePort: 30351         # NodePort, the port accessed by external clients
     protocol: TCP
   selector:
-    project: nginx
+    project: django
