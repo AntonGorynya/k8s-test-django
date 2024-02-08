@@ -59,8 +59,6 @@ $secret_key = python -c 'from django.core.management.utils import get_random_sec
 ```
 
 Создаем `secret` из 2х переменных:
-- SECRET_KEY - секретный ключ вашего проекта на django 
-- DATABASE_URL - ссылка вида postgres://USER:PASSWORD@HOST:PORT/NAME
 ```commandline
 kubectl create secret generic django-secret-config --from-literal=SECRET_KEY=$secret_key --from-literal=DATABASE_URL=postgres://postgres:$result@my-postgresql.default.svc.cluster.local:5432/postgres 
 ```
@@ -147,4 +145,16 @@ kubectl exec -it app-deployment-7f6d7fb5c8-dsrjj  -c django-container -- /bin/sh
 и создайте superuser
 ```commandline
 python manage.py createsuperuser
+```
+# Создание Docker образа
+Вы можете использовать готовый Docker образ, который залит на DockerHub. Так же есть возможность создать свой собственный.
+Создайте репозиторий на [DockerHub](https://hub.docker.com/)
+Для этого перейдите в папку `backend_main_django` и соберите образ
+```commandline
+docker build  -t yournaname/appname:tagname . 
+```
+Сделайте `push`
+```commandline
+docker login
+docker push yournaname/appname:tagname
 ```
